@@ -91,7 +91,6 @@ void freeNode(struct StructNode *node) {
     free(node);
 }
 
-
 void yyerror(char *s, ...) {
     va_list ap;
     fprintf(stderr, "%d: error: ", yylineno);
@@ -99,6 +98,36 @@ void yyerror(char *s, ...) {
     vfprintf(stderr, s, ap);
     va_end(ap);
     fprintf(stderr, "\n");
+}
+
+static char * scalarTypeName[] = {"", "i8", "u8", "i16", "u16", "i32",
+    "u32", "i64", "u64"};
+
+int genStmtDefCode(FILE *out, struct StructNode *node) {
+    if (node->nodetype >= NT_I8 && node->nodetype < NT_U64) {
+        fprintf(out, "\t%s %s;\n",
+                scalarTypeName[node->nodetype], node->name);
+        return 0;
+    }
+    switch(node->nodetype) {
+        case NT_ARRAY:
+            break;
+
+    }
+    return 0;
+}
+
+int genDefCode(FILE *out, struct StructNode *node) {
+    fprintf(out, "struct %s {\n", node->name);
+    
+    struct StructNode *cur = node->next; 
+    while (cur) {
+        genStmtDefCode(out, cur);
+        cur = cur->next;
+    }
+
+    fprintf(out, "}");
+    return 0;
 }
 
 

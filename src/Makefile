@@ -11,4 +11,4 @@ bison: parser.y
 .PHONY: clean
 
 clean:
-	rm -rf parser.tab.c parser.tab.h lex.yy.c test
+	rm -rf parser.tab.c parser.tab.h lex.yy.c yproto
