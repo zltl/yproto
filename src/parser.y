@@ -4,6 +4,8 @@
 #include <string.h>
 #include "ast.h"
 
+FILE *yyin;
+
 int yylex();
 %}
 
@@ -166,9 +168,5 @@ vectorT: VECTOR '<' scalarT  ',' scalarT '>' {
        ;
 
 %%
-
-int main() {
-	return yyparse();
-}
 
 
