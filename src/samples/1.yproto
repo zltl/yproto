@@ -1,0 +1,21 @@
+syntax = yproto1;
+
+struct MsgA {
+    i8 val1;
+    i16 val2;
+    i32 val3;
+    u16 val4;
+    u64 val5;
+    [100][10]u8 arrayval1;
+    vector<i8, i8> varstring1; // 1 byte length, remains content
+    vector<u16, i32> varstring2; // 2 byte length, remains content
+    [10]vector<i32, i64> arv;
+    [100]vector<i32, vector<i8, [10]u8>> varstringarr2;
+}
+
+struct MsgB {
+    MsgA embedMsg;
+    [10]msgA msgarrayA;
+    i64 intval64;
+}
+
