@@ -532,6 +532,8 @@ void convCC(char *name) {
     while (*name) {
         if (!isalpha(*name) && !isdigit(*name)) {
             *name = '_';
+        } else {
+            *name = toupper(*name);
         }
         name++;
     }
