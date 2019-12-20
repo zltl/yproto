@@ -26,9 +26,22 @@ typedef unsigned int u32;
 typedef signed long long i64;
 typedef unsigned long long u64;
 
-u16 decode_u16(const u8 *buf);
-u32 decode_u32(const u8 *buf);
-u64 decode_u64(const u8 *buf);
+int decodeU16(const u8 *buf, void *v);
+int decodeU32(const u8 *buf, void *v);
+int decodeU64(const u8 *buf, void *v);
+int encodeU16(u8 *buf, u16 v);
+int encodeU32(u8 *buf, u32 v);
+int encodeU64(u8 *buf, u64 v);
+
+#define __DEF_YPROTO_VECTOR(lt) struct vector##lt { lt length; void *value; }
+__DEF_YPROTO_VECTOR(u8);
+__DEF_YPROTO_VECTOR(i8);
+__DEF_YPROTO_VECTOR(u16);
+__DEF_YPROTO_VECTOR(i16);
+__DEF_YPROTO_VECTOR(u32);
+__DEF_YPROTO_VECTOR(i32);
+__DEF_YPROTO_VECTOR(u64);
+__DEF_YPROTO_VECTOR(i64);
 
 #ifdef __cplusplus
 }

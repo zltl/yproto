@@ -2,6 +2,7 @@
 #define AST_H_
 
 #include <stddef.h>
+#include <stdio.h>
 
 #define PROTO_SYNTAX "yproto1"
 
@@ -94,6 +95,7 @@ struct StructNode *newScalar(int nodetype, char *name);
 struct StructNode *defStructNode();
 struct StructNode *newStructField(char *tpname, char *fieldname);
 void freeNode(struct StructNode *node);
+int genCodes(char *headerfile, char *sourcefile);
 
 #endif /* AST_H_ */
 

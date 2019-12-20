@@ -1,0 +1,9 @@
+syntax = yproto1;
+
+struct MsgB {
+}
+
+struct MsgA {
+    [2]vector<i32, MsgB> vecMsgB;
+}
+

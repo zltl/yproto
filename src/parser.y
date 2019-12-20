@@ -6,6 +6,9 @@
 
 FILE *yyin;
 
+extern char outfileHeadName[100];
+extern char outfileCodeName[100];
+
 int yylex();
 %}
 
@@ -26,10 +29,15 @@ int yylex();
 %type <t> scalarT
 
 %start yproto
+
 %%
 
-yproto: syntaxline structDefList { printf("end\n"); }
-      | structDefList { printf("end\n");  }
+yproto: syntaxline structDefList {
+      genCodes(outfileHeadName, outfileCodeName);
+      }
+      | structDefList {
+      genCodes(outfileHeadName, outfileCodeName);
+      };
       ;
 
 syntaxline: SYNTAX '=' IDENTIFIER ';' {
@@ -122,6 +130,10 @@ arrayT: arrayDim scalarT {
       printf("arrayT of %s\n", $2);
       $$ = $1;
       struct StructNode *tn = lookup($2);
+      if (tn == NULL) {
+        yyerror("struct %s not define\n", $2);
+        exit(1);
+      }
       $$->elemType = NT_STRUCT;
       $$->elemTypePtr = tn;
       }
@@ -143,6 +155,10 @@ vectorT: VECTOR '<' scalarT  ',' scalarT '>' {
        | VECTOR '<' scalarT  ',' IDENTIFIER '>' { 
        printf("vector of %s\n", $5);
        struct StructNode *tn = lookup($5);
+       if (tn == NULL) {
+        yyerror("struct %s not define.\n", $5);
+        exit(1);
+       }
        $$ = newNode();
        $$->nodetype = NT_VECTOR;
        $$->vectorSizeType = $3;
@@ -151,19 +167,14 @@ vectorT: VECTOR '<' scalarT  ',' scalarT '>' {
        }
        | VECTOR '<' scalarT  ',' arrayT '>' { 
        printf("vector of array\n");
-       $$ = newNode();
-       $$->nodetype = NT_VECTOR;
-       $$->vectorSizeType = $3;
-       $$->elemType = NT_ARRAY;
-       $$->elemTypePtr = $5;
+       yyerror("vector element cannot be array, put array into struct then set the struct here");
+       exit(1);
        }
        | VECTOR '<' scalarT  ',' vectorT '>' { 
        printf("vector of vector\n");
-       $$ = newNode();
-       $$->nodetype = NT_VECTOR;
-       $$->vectorSizeType = $3;
-       $$->elemType = NT_VECTOR;
-       $$->elemTypePtr = $5;
+       printf("vector of array\n");
+       yyerror("vector element cannot be vector, put vector into struct then set the struct here");
+       exit(1);
        }
        ;
 

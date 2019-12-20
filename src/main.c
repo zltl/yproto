@@ -55,6 +55,9 @@ static struct argp argp = { options, parse_opt, args_doc, doc };
 
 extern FILE *yyin;
 
+char outfileHeadName[100];
+char outfileCodeName[100];
+
 int main(int argc, char *argv[]) {
     struct arguments arguments;
 
@@ -64,17 +67,23 @@ int main(int argc, char *argv[]) {
 
     argp_parse(&argp, argc, argv, 0, 0, &arguments);
 
+    /*
     printf("OUTPUT_FILE = %s\n"
             "VERBOSE = %s\nSILENT = %s\n",
             arguments.input_file,
             arguments.verbose ? "yes" : "no",
             arguments.silent ? "yes" : "no");
+            */
 
     yyin = fopen(arguments.input_file, "r");
     if (yyin == NULL) {
         fprintf(stderr, "cannot open file: %s\n", arguments.input_file);
         exit(1);
     }
+
+    sprintf(outfileHeadName, "%s.h", arguments.input_file);
+    sprintf(outfileCodeName, "%s.c", arguments.input_file);
+
     int r = yyparse();
     fclose(yyin);
     return r;

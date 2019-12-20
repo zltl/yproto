@@ -7,15 +7,15 @@ struct MsgA {
     u16 val4;
     u64 val5;
     [100][10]u8 arrayval1;
-    vector<i8, i8> varstring1; // 1 byte length, remains content
+    vector<i8, i16> varstring1; // 1 byte length, remains content
     vector<u16, i32> varstring2; // 2 byte length, remains content
-    [10]vector<i32, i64> arv;
-    [100]vector<i32, vector<i8, [10]u8>> varstringarr2;
+    vector<i32, i64> arv;
+    [100]vector<i32, u8> varstringarr2;
 }
 
 struct MsgB {
     MsgA embedMsg;
-    [10]msgA msgarrayA;
+    [10]MsgA msgarrayA;
     i64 intval64;
 }
 
